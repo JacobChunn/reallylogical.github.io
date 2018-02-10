@@ -14,7 +14,7 @@ var y = {
 };
  
 left = [];
- 
+
 var rinput,ginput,binput;
 var gridToggle, single, five, circle, callig;
 var gridBool = true;
@@ -99,7 +99,6 @@ function setup() {
             left[i][j].show();
         }
     }
-   
 }
 
 function setSingle()
