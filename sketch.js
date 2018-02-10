@@ -1,36 +1,80 @@
-var drawCheck = 0;
+var col;
+var brush = 'single';
 
-var shapeSize = 30;
+var boxsize = 24;
+var cols = 64;
+var rows = 36;
 
-var lineX1 = 0;
-var lineY1 = 0;
+var rinput,ginput,binput;
+var gridToggle, single, five, circle, callig;
+var gridBool = true;
+var streamBool = true;
 
+arrPos = [];
 
-function setup() {
-	createCanvas(1000,1000);
-	background(0);
-	frameRate(144);
+var x = {arrPos:200};
+var y = {arrPos:40};
+ 
+function setup() 
+{
+    createCanvas(windowWidth-5,windowHeight-5);
+    background(0);
+    frameRate(60);
+   
+	
+    createIO();
+   
+    fill(150);  //Default Light Gray Cell
+    noStroke();
+    for (var i=0; i < cols; i++) //arrPos
+	{  
+        arrPos[i] = [];
+        for (var j=0; j < rows; j++) 
+		{
+           
+            arrPos[i][j] = new Square(i*boxsize+x.arrPos,j*boxsize+y.arrPos, boxsize);
+            arrPos[i][j].show();
+        }
+    } 
+}
+ 
+function draw() 
+{
+    var r = rinput.value();
+    var g = ginput.value();
+    var b = binput.value();
+    col = color(r,g,b);
+   
+    if (gridBool == true) 
+	{
+        stroke(0);
+		gridDraw();
+    } 
+	else 
+	{
+        noStroke();
+        for (var i=0; i < cols; i++) 
+		{
+            for (var j=0; j < rows; j++) 
+			{
+				fill(arrPos[i][j].tell());
+				arrPos[i][j].show();
+            }
+        }
+       
+       
+    }
+    if (streamBool == true && mouseIsPressed) 
+	{ 
+        changeColors();
+    }
 }
 
-function draw() {
-	if (drawCheck == 0) {
-		stroke(255);
-		noFill();
-		if (random(1) < 0.5) {
-			line(lineX1, lineY1, lineX1 + shapeSize, lineY1 + shapeSize);
-			//arc(lineX1,lineY1,shapeSize,shapeSize,3.92699081699,0.785398, OPEN);
-		} else {
-			line(lineX1 + shapeSize, lineY1, lineX1, lineY1 + shapeSize);
-			//arc(lineX1,lineY1, shapeSize, shapeSize, 2.35619, 5.49779, OPEN);
-		}
-		lineX1 = lineX1 + shapeSize;
-		if (lineX1 > width) {
-		lineX1 = 0;
-		lineY1 = lineY1 + shapeSize;
-		}
-	}
-	
-	if (lineY1 > height) {
-		drawCheck = 1;
-	}
+ 
+function mousePressed() 
+{
+    if (streamBool == false) 
+	{
+		changeColors();
+    }
 }
