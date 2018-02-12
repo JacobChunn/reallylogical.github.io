@@ -1,46 +1,51 @@
 function createIO()
 {
-	rinput = createSlider(0,255,0);
-    rinput.position(50,50);
-    rinput.size(100);
-   
-    ginput = createSlider(0,255,0);
-    ginput.position(50,100);
-    ginput.size(100);
-   
-    binput = createSlider(0,255,0);
-    binput.position(50,150);
-    binput.size(100);
-   
+	
+	gui = createGui('Settings:');
+	
+	sliderRange(1,64,1);
+	gui.addGlobals('Columns');
+	
+	sliderRange(1,36,1)
+	gui.addGlobals('Rows');
+	
+	sliderRange(0,255,1);
+	gui.addGlobals('Red', 'Green', 'Blue');
+	
     gridToggle = createButton('Toggle Grid');
-    gridToggle.position(52,200);
+    gridToggle.position(52,350);
     gridToggle.size(100);
     gridToggle.mousePressed(gridCheck);
     
     streamToggle = createButton('Toggle Stream');
-    streamToggle.position(52,250);
+    streamToggle.position(52,400);
     streamToggle.size(100);
     streamToggle.mousePressed(streamCheck);
 
     Single = createButton('Single Pen');
-    Single.position(52,400);
+    Single.position(52,465);
     Single.size(100);
     Single.mousePressed(setSingle);
     
     Five = createButton('Five Pen');
-    Five.position(52,450);
+    Five.position(52,515);
     Five.size(100);
     Five.mousePressed(setFive);
     
     Circle = createButton('Circle Pen');
-    Circle.position(52,500);
+    Circle.position(52,565);
     Circle.size(100);
     Circle.mousePressed(setCircle);
     
     Callig = createButton('Calligraphy Pen');
-    Callig.position(52,550);
+    Callig.position(52,615);
     Callig.size(100);
-    Callig.mousePressed(setCallig);
+    Callig.mousePressed(setCallig);    
+	
+	ClearCanv = createButton('Clear Canvas');
+    ClearCanv.position(52,680);
+    ClearCanv.size(100);
+    ClearCanv.mousePressed(ClearCanvas);
 }
 
 function setSingle()
@@ -77,15 +82,23 @@ function setCallig()
 
 function gridDraw() 
 {
-    for (var i=0; i < rows; i++) 
+	noStroke();
+    for (var i=0; i < Columns; i++) 
 	{
-        line(x.arrPos,y.arrPos + (boxsize * i), x.arrPos + (cols * boxsize),y.arrPos + (boxsize * i));
+        for (var j=0; j < Rows; j++) 
+		{
+			fill(arrPos[i][j].tell());
+			arrPos[i][j].show();
+        }
     }
-   
-    for (var j=0; j < cols; j++) 
-	{
-        line(x.arrPos + (boxsize * j),y.arrPos, x.arrPos + (boxsize * j),y.arrPos + (boxsize * rows));
-    }
+	
+	stroke(0);
+	for (var i=0; i <= Rows; i++) {
+		line(x.arrPos,y.arrPos + (i * boxsize), x.arrPos + (Columns * boxsize), y.arrPos + (i * boxsize));
+	}
+	for (var j=0; j <= Columns; j++) {
+		line(x.arrPos + (j * boxsize), y.arrPos, x.arrPos + (j * boxsize), y.arrPos + (Rows * boxsize));
+	}
 }
  
 function gridCheck() 

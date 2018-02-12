@@ -2,60 +2,71 @@ var col;
 var brush = 'single';
 
 var boxsize = 24;
-var cols = 64;
-var rows = 36;
+var Columns = 64;
+var Rows = 36;
 
-var rinput,ginput,binput;
+var Red = 0;
+var Green = 0;
+var Blue = 0;
 var gridToggle, single, five, circle, callig;
 var gridBool = true;
 var streamBool = true;
 
 arrPos = [];
+saveSquares = [];
 
-var x = {arrPos:200};
+var x = {arrPos:240};
 var y = {arrPos:40};
- 
+
+var lastJ = -1;
+var lastI = -1;
+
+var frameCheck = false;
+
 function setup() 
 {
+	stroke(1);
     createCanvas(windowWidth-5,windowHeight-5);
-    background(0);
     frameRate(60);
    
 	
     createIO();
    
-    fill(150);  //Default Light Gray Cell
-    noStroke();
-    for (var i=0; i < cols; i++) //arrPos
-	{  
-        arrPos[i] = [];
-        for (var j=0; j < rows; j++) 
-		{
-           
-            arrPos[i][j] = new Square(i*boxsize+x.arrPos,j*boxsize+y.arrPos, boxsize);
-            arrPos[i][j].show();
-        }
-    } 
+    ClearCanvas();    
+	
 }
  
-function draw() 
+function draw()
 {
-    var r = rinput.value();
-    var g = ginput.value();
-    var b = binput.value();
+	if (mouseHeldCheck() == false) {
+		lastI = -1;
+		lastJ = -1;
+	}
+	
+    var r = Red;
+    var g = Green;
+    var b = Blue;
+	
+	background(r,g,b);
+	
     col = color(r,g,b);
-   
+   	
+	if (mouseIsPressed == true) {
+		frameCheck = true;
+	} else if (mouseIsPressed == false) {
+		frameCheck = false;
+	}
+	
     if (gridBool == true) 
 	{
-        stroke(0);
 		gridDraw();
     } 
 	else 
 	{
         noStroke();
-        for (var i=0; i < cols; i++) 
+        for (var i=0; i < Columns; i++) 
 		{
-            for (var j=0; j < rows; j++) 
+            for (var j=0; j < Rows; j++) 
 			{
 				fill(arrPos[i][j].tell());
 				arrPos[i][j].show();
@@ -68,11 +79,16 @@ function draw()
 	{ 
         changeColors();
     }
+	
+	noFill();
+	stroke(0);
+	rect(240,40,Columns*boxsize,Rows*boxsize);
 }
 
  
 function mousePressed() 
 {
+	noStroke();
     if (streamBool == false) 
 	{
 		changeColors();
